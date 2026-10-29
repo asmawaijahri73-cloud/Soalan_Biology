@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Biologi SPM: Organel & Fungsi Sel</title>
+    
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: #0f172a;
+            padding: 12px;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .container {
+            max-width: 760px;
+            margin: 10px auto 40px auto;
+            background: #ffffff;
+            padding: 22px 18px;
+            border-radius: 14px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+            border: 1px solid #cbd5e1;
+        }
+
+        /* Notis penting cara buka di iPhone */
+        .ios-tip {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            color: #92400e;
+            padding: 10px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            line-height: 1.4;
+        }
+
+        .spm-badge {
+            background: #0284c7;
+            color: white;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        h1 {
+            color: #0f172a;
+            font-size: 20px;
+            font-weight: 700;
+            margin: 4px 0 15px 0;
+        }
+
+        .name-box {
+            background: #f8fafc;
+            border: 1.5px solid #cbd5e1;
+            padding: 12px 14px;
+            border-radius: 10px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 16px WAJIB untuk elak auto-zoom di iPhone */
+        input[type="text"], textarea {
+            font-size: 16px !important; 
+            border-radius: 8px;
+            font-family: inherit;
+        }
+
+        .name-box input {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid #94a3b8;
+            background: #ffffff;
+            color: #0f172a;
+        }
+
+        .diagram-container {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .diagram-container svg {
+            width: 100%;
+            max-width: 440px;
+            height: auto;
+            display: block;
+            margin: auto;
+        }
+
+        .diagram-caption {
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #475569;
+            margin-top: 8px;
+        }
+
+        .q-block {
+            background: #ffffff;
+            border: 1.5px solid #e2e8f0;
+            border-left: 5px solid #0284c7;
+            padding: 16px 14px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: all 0.2s;
+        }
+
+        .q-title {
+            font-weight: 700;
+            font-size: 14.5px;
+            color: #0f172a;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .marks-tag {
+            color: #64748b;
+            font-size: 12.5px;
+            white-space: nowrap;
+        }
+
+        .ans-input {
+            width: 100%;
+            padding: 11px 12px;
+            border: 1.5px solid #cbd5e1;
+            color: #0f172a;
+            outline: none;
+            background: #ffffff;
+            transition: all 0.2s;
+        }
+
+        .ans-input:focus {
+            border-color: #0284c7;
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
+        }
+
+        textarea.ans-input {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        /* WARNA KOTAK JAWAPAN SELEPAS DISEMAK */
+        .ans-input.input-correct {
+            border: 2px solid #16a34a !important;
+            background-color: #f0fdf4 !important;
+            color: #14532d !important;
+            font-weight: 600;
+        }
+
+        .ans-input.input-wrong {
+            border: 2px solid #dc2626 !important;
+            background-color: #fef2f2 !important;
+            color: #7f1d1d !important;
+            font-weight: 600;
+        }
+
+        .ans-input.input-partial {
+            border: 2px solid #d97706 !important;
+            background-color: #fffbeb !important;
+            color: #78350f !important;
+            font-weight: 600;
+        }
+
+        .input-error {
+            border: 2px solid #ef4444 !important;
+            background-color: #fff5f5 !important;
+        }
+
+        /* TANDA BADGE BETUL / SALAH */
+        .status-badge {
+            display: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 800;
+            margin: 8px 0;
+        }
+
+        .badge-correct {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background-color: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+        }
+
+        .badge-wrong {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background-color: #fee2e2;
+            color: #b91c1c;
+            border: 1px solid #fca5a5;
+        }
+
+        .badge-partial {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background-color: #fef3c7;
+            color: #b45309;
+            border: 1px solid #fcd34d;
+        }
+
+        .skema-box {
+            display: none;
+            margin-top: 8px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            line-height: 1.5;
+            background-color: #f8fafc;
+            border: 1px solid #cbd5e1;
+        }
+
+        .alert-card {
+            display: none;
+            background-color: #fef2f2;
+            color: #991b1b;
+            border: 1.5px solid #f87171;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 13.5px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        /* BUTANG HANTAR TEGUH */
+        .btn-submit {
+            background-color: #0284c7;
+            color: #ffffff;
+            border: none;
+            padding: 16px 20px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 10px;
+            cursor: pointer;
+            width: 100%;
+            display: block;
+            touch-action: manipulation;
+            -webkit-appearance: none;
+        }
+
+        .btn-submit:active {
+            background-color: #0369a1;
+        }
+
+        .btn-submit:disabled {
+            background-color: #94a3b8;
+            cursor: default;
+        }
+
+        .summary-card {
+            display: none;
+            background: #f8fafc;
+            border: 2px solid #0284c7;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 25px;
+        }
+
+        .btn-reset {
+            background: #475569;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Panduan ringkas jika dibuka dalam mod Quick Look iPhone -->
+    <div class="ios-tip">
+        <strong>Penting bagi Pengguna iPhone/iPad:</strong><br>
+        Jika butang tidak bertindak balas apabila ditekan, ini kerana fail dibuka dalam mod pratonton (*Quick Look*). Sila tekan ikon <strong>Share</strong> (petak dengan anak panah ke atas) &gt; pilih <strong>"Open in Safari"</strong>.
+    </div>
+
+    <div class="spm-badge">SOALAN FORMAT SPM KERTAS 2</div>
+    <h1>Biologi SPM: Organel Sel & Fisiologi</h1>
+
+    <!-- Borang Utama (Form) untuk menjamin sokongan Safari iOS -->
+    <form id="spm-form" onsubmit="return submitAnswers(event)">
+
+        <!-- Ruang Nama Calon -->
+        <div class="name-box">
+            <label for="student-name"><strong>Nama Calon:</strong></label>
+            <input type="text" id="student-name" placeholder="Tuliskan nama penuh calon (Wajib)..." autocomplete="off">
+        </div>
+
+        <p style="font-size: 14px; color: #334155;">
+            <strong>Rajah 1</strong> menunjukkan penghasilan dan perembesan enzim pencernaan oleh sel kelenjar dalam organ M (Pankreas).
+        </p>
+
+        <!-- Gambar Rajah Jasad Golgi -->
+        <div class="diagram-container">
+            <svg viewBox="0 0 450 210">
+                <rect x="5" y="5" width="440" height="200" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+
+                <path d="M 40 30 Q 55 70 40 110 T 40 170" fill="none" stroke="#64748b" stroke-width="7" stroke-linecap="round"/>
+                <path d="M 55 40 Q 70 80 55 120 T 55 160" fill="none" stroke="#64748b" stroke-width="7" stroke-linecap="round"/>
+                <text x="35" y="190" font-size="11" font-weight="bold" fill="#64748b">JEK</text>
+
+                <circle cx="95" cy="75" r="7" fill="#38bdf8" stroke="#0284c7" stroke-width="1.5"/>
+                <circle cx="105" cy="115" r="8" fill="#38bdf8" stroke="#0284c7" stroke-width="1.5"/>
+                <path d="M 115 115 L 140 115" stroke="#0284c7" stroke-width="1.5" stroke-dasharray="3,3"/>
+
+                <path d="M 160 45 Q 185 105 160 165" fill="none" stroke="#0284c7" stroke-width="12" stroke-linecap="round"/>
+                <path d="M 180 40 Q 210 105 180 170" fill="none" stroke="#0369a1" stroke-width="12" stroke-linecap="round"/>
+                <path d="M 200 45 Q 235 105 200 165" fill="none" stroke="#075985" stroke-width="12" stroke-linecap="round"/>
+                <path d="M 220 55 Q 255 105 220 155" fill="none" stroke="#0c4a6e" stroke-width="12" stroke-linecap="round"/>
+
+                <line x1="190" y1="40" x2="220" y2="15" stroke="#e11d48" stroke-width="2"/>
+                <rect x="215" y="5" width="85" height="22" rx="4" fill="#fee2e2" stroke="#e11d48" stroke-width="1.5"/>
+                <text x="257" y="20" font-size="12" font-weight="bold" fill="#be123c" text-anchor="middle">Organel P</text>
+
+                <circle cx="250" cy="80" r="9" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
+                <circle cx="265" cy="130" r="10" fill="#f59e0b" stroke="#d97706" stroke-width="1.5"/>
+                <text x="280" y="150" font-size="10" fill="#b45309" font-weight="600">Vesikel rembesan</text>
+
+                <path d="M 370 20 L 370 190" stroke="#334155" stroke-width="5" stroke-linecap="round"/>
+                <text x="365" y="202" font-size="11" fill="#334155" font-weight="bold" text-anchor="middle">Membran plasma</text>
+                
+                <circle cx="395" cy="100" r="4" fill="#ec4899"/>
+                <circle cx="410" cy="95" r="4" fill="#ec4899"/>
+                <circle cx="405" cy="110" r="4" fill="#ec4899"/>
+                <text x="410" y="130" font-size="10" fill="#be185d" font-weight="bold">Enzim dirembes</text>
+            </svg>
+            <div class="diagram-caption">Rajah 1: Pemprosesan dan perembesan enzim dalam sel kelenjar</div>
+        </div>
+
+        <!-- SOALAN (a) -->
+        <div class="q-block" id="block_a">
+            <div class="q-title">
+                <span>(a) Namakan organel P yang terlibat dalam proses mengubah suai, membungkus, dan mengangkut protein/enzim ke luar sel.</span>
+                <span class="marks-tag">[1 Markah]</span>
+            </div>
+            <input type="text" class="ans-input" id="ans_a" placeholder="Tulis jawapan anda di sini..." autocomplete="off">
+            <div id="badge_a" class="status-badge"></div>
+            <div id="skema_a" class="skema-box"></div>
+        </div>
+
+        <!-- SOALAN (b) -->
+        <div class="q-block" id="block_b">
+            <div class="q-title">
+                <span>(b) Berikan satu contoh enzim pencernaan yang dirembeskan oleh organ M (Pankreas).</span>
+                <span class="marks-tag">[1 Markah]</span>
+            </div>
+            <input type="text" class="ans-input" id="ans_b" placeholder="Tulis jawapan anda di sini..." autocomplete="off">
+            <div id="badge_b" class="status-badge"></div>
+            <div id="skema_b" class="skema-box"></div>
+        </div>
+
+        <!-- SOALAN (c) -->
+        <div class="q-block" id="block_c">
+            <div class="q-title">
+                <span>(c) Terangkan apa yang akan berlaku kepada pencernaan lemak jika salur hempedu tersumbat.</span>
+                <span class="marks-tag">[2 Markah]</span>
+            </div>
+            <textarea class="ans-input" id="ans_c" placeholder="Tulis penerangan anda di sini..."></textarea>
+            <div id="badge_c" class="status-badge"></div>
+            <div id="skema_c" class="skema-box"></div>
+        </div>
+
+        <!-- SOALAN (d) -->
+        <div class="q-block" id="block_d">
+            <div class="q-title">
+                <span>(d) Nyatakan satu adaptasi sel otot yang mempunyai kepadatan mitokondria yang tinggi dan jelaskan sebabnya.</span>
+                <span class="marks-tag">[2 Markah]</span>
+            </div>
+            <textarea class="ans-input" id="ans_d" placeholder="Tulis jawapan dan sebab di sini..."></textarea>
+            <div id="badge_d" class="status-badge"></div>
+            <div id="skema_d" class="skema-box"></div>
+        </div>
+
+        <!-- Amaran jika ruangan belum lengkap -->
+        <div id="alert-card" class="alert-card">
+            &#9888;&#65039; <span id="alert-msg">Sila lengkapkan semua ruangan sebelum menghantar jawapan!</span>
+        </div>
+
+        <!-- Butang Hantar (Type Submit) -->
+        <button type="submit" id="btn-submit" class="btn-submit">Hantar & Semak Jawapan</button>
+
+    </form>
+
+    <!-- Ringkasan Markah -->
+    <div id="summary-card" class="summary-card">
+        <div style="font-size: 13px; font-weight: 700; color: #b91c1c; margin-bottom: 8px;">&#128274; JAWAPAN TELAH DIHANTAR DAN DIKUNCI</div>
+        <h2 id="res-student-name" style="margin: 0 0 5px 0; color: #0284c7;"></h2>
+        <div style="font-size: 28px; font-weight: 800; color: #0f172a; margin: 8px 0;" id="total-score-display">0 / 6 Markah</div>
+        <p id="res-comment" style="font-size: 14.5px; margin: 0 0 15px 0; font-weight: 600; color: #475569;"></p>
+        <button type="button" class="btn-reset" onclick="resetForm()">Cuba Semula (Reset)</button>
+    </div>
+</div>
+
+<script>
+    function evaluateConcept(userInput, validKeywords) {
+        if (!userInput || userInput.trim() === "") return false;
+        var text = userInput.toLowerCase().trim();
+        for (var i = 0; i < validKeywords.length; i++) {
+            if (text.indexOf(validKeywords[i].toLowerCase()) !== -1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function markQuestion(inputId, badgeId, blockId, skemaId, scored, maxMarks, rubricHtml) {
+        var inputEl = document.getElementById(inputId);
+        var badgeEl = document.getElementById(badgeId);
+        var blockEl = document.getElementById(blockId);
+        var skemaEl = document.getElementById(skemaId);
+
+        inputEl.classList.remove("input-correct", "input-wrong", "input-partial");
+
+        if (scored === maxMarks) {
+            inputEl.classList.add("input-correct");
+            badgeEl.className = "status-badge badge-correct";
+            badgeEl.innerHTML = "&#10004; TAHNIAH, JAWAPAN ANDA BETUL! (" + scored + "/" + maxMarks + " Markah)";
+            blockEl.style.borderLeftColor = "#16a34a";
+        } else if (scored > 0) {
+            inputEl.classList.add("input-partial");
+            badgeEl.className = "status-badge badge-partial";
+            badgeEl.innerHTML = "&#9888; SEBAHAGIAN BETUL (" + scored + "/" + maxMarks + " Markah). Ada poin tertinggal.";
+            blockEl.style.borderLeftColor = "#d97706";
+        } else {
+            inputEl.classList.add("input-wrong");
+            badgeEl.className = "status-badge badge-wrong";
+            badgeEl.innerHTML = "&#10008; JAWAPAN SALAH / KURANG TEPAT (" + scored + "/" + maxMarks + " Markah)";
+            blockEl.style.borderLeftColor = "#dc2626";
+        }
+
+        badgeEl.style.display = "inline-flex";
+        skemaEl.style.display = "block";
+        skemaEl.innerHTML = rubricHtml;
+    }
+
+    function submitAnswers(event) {
+        if (event && event.preventDefault) {
+            event.preventDefault();
+        }
+
+        if (document.activeElement) {
+            document.activeElement.blur();
+        }
+
+        var nameInput = document.getElementById("student-name");
+        var ansA = document.getElementById("ans_a");
+        var ansB = document.getElementById("ans_b");
+        var ansC = document.getElementById("ans_c");
+        var ansD = document.getElementById("ans_d");
+        var alertCard = document.getElementById("alert-card");
+        var alertMsg = document.getElementById("alert-msg");
+
+        var inputsList = [
+            { el: nameInput, name: "Nama Calon" },
+            { el: ansA, name: "Soalan (a)" },
+            { el: ansB, name: "Soalan (b)" },
+            { el: ansC, name: "Soalan (c)" },
+            { el: ansD, name: "Soalan (d)" }
+        ];
+
+        // Buang ralat merah lama
+        for (var i = 0; i < inputsList.length; i++) {
+            inputsList[i].el.classList.remove("input-error");
+        }
+
+        // Semak ruangan kosong
+        var emptyCount = 0;
+        var firstEmpty = null;
+        for (var j = 0; j < inputsList.length; j++) {
+            if (inputsList[j].el.value.trim() === "") {
+                inputsList[j].el.classList.add("input-error");
+                emptyCount++;
+                if (!firstEmpty) firstEmpty = inputsList[j].el;
+            }
+        }
+
+        if (emptyCount > 0) {
+            alertCard.style.display = "block";
+            alertMsg.innerHTML = "Terdapat <strong>" + emptyCount + "</strong> ruangan yang belum diisi! Sila lengkapkan kotak bertanda merah.";
+            firstEmpty.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return false;
+        }
+
+        alertCard.style.display = "none";
+
+        // KUNCI JAWAPAN
+        nameInput.readOnly = true;
+        ansA.readOnly = true;
+        ansB.readOnly = true;
+        ansC.readOnly = true;
+        ansD.readOnly = true;
+
+        var submitBtn = document.getElementById("btn-submit");
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Jawapan Telah Disemak & Ditanda";
+
+        var totalMarks = 0;
+
+        // Semakan (a)
+        var correctA = evaluateConcept(ansA.value, ["jasad golgi", "aparatus golgi", "badan golgi", "golgi apparatus", "jasad golgy"]);
+        var marksA = correctA ? 1 : 0;
+        totalMarks += marksA;
+        markQuestion("ans_a", "badge_a", "block_a", "skema_a", marksA, 1, 
+            "<strong>Skema Pemarkahan SPM:</strong><br>• <strong>Jasad Golgi</strong> / <strong>Aparatus Golgi</strong> [1m]"
+        );
+
+        // Semakan (b)
+        var correctB = evaluateConcept(ansB.value, ["amilase", "lipase", "tripsin", "trypsin"]);
+        var marksB = correctB ? 1 : 0;
+        totalMarks += marksB;
+        markQuestion("ans_b", "badge_b", "block_b", "skema_b", marksB, 1, 
+            "<strong>Skema Pemarkahan SPM:</strong><br>• Mana-mana satu: <strong>Amilase (pankreas)</strong> / <strong>Lipase</strong> / <strong>Tripsin</strong> [1m]"
+        );
+
+        // Semakan (c)
+        var p1_c = evaluateConcept(ansC.value, ["emulsi", "emulsikan", "titisan halus", "titisan kecil", "tiada hempedu", "kurang hempedu"]);
+        var p2_c = evaluateConcept(ansC.value, ["luas permukaan", "lambat", "perlahan", "sukar", "terjejas", "kurang pencernaan", "lipase"]);
+        var marksC = 0;
+        if (p1_c) marksC++;
+        if (p2_c) marksC++;
+        totalMarks += marksC;
+        markQuestion("ans_c", "badge_c", "block_c", "skema_c", marksC, 2, 
+            "<strong>Skema Pemarkahan SPM:</strong><br>" +
+            "• <strong>Poin 1:</strong> Lemak/lipid <u>tidak dapat diemulsikan</u> (kepada titisan halus). [1m]<br>" +
+            "• <strong>Poin 2:</strong> (Jumlah) <u>luas permukaan lemak berkurang</u> // tindakan enzim <u>lipase perlahan / terjejas</u>. [1m]"
+        );
+
+        // Semakan (d)
+        var p1_d = evaluateConcept(ansD.value, ["tenaga", "atp", "respirasi sel", "respirasi"]);
+        var p2_d = evaluateConcept(ansD.value, ["pengecutan", "pengenduran", "mengecut", "mengendur", "pergerakan", "bergerak"]);
+        var marksD = 0;
+        if (p1_d) marksD++;
+        if (p2_d) marksD++;
+        totalMarks += marksD;
+        markQuestion("ans_d", "badge_d", "block_d", "skema_d", marksD, 2, 
+            "<strong>Skema Pemarkahan SPM:</strong><br>" +
+            "• <strong>Poin 1:</strong> Untuk <u>menjana/menghasilkan lebih banyak tenaga (ATP)</u>. [1m]<br>" +
+            "• <strong>Poin 2:</strong> Membolehkan <u>pengecutan dan pengenduran otot</u> (menghasilkan pergerakan). [1m]"
+        );
+
+        // Paparkan Ringkasan Markah
+        var summaryCard = document.getElementById("summary-card");
+        summaryCard.style.display = "block";
+        document.getElementById("res-student-name").innerText = "Nama Calon: " + nameInput.value.trim();
+        document.getElementById("total-score-display").innerText = totalMarks + " / 6 Markah";
+
+        var comment = "";
+        if (totalMarks === 6) {
+            comment = "Cemerlang! Semua jawapan anda betul dan menepati skema SPM dengan sempurna.";
+        } else if (totalMarks >= 4) {
+            comment = "Pencapaian Baik! Sila semak jawapan yang ditanda merah/kuning untuk memperbaiki huraian kata kunci.";
+        } else {
+            comment = "Perlu Bimbingan. Teliti kotak bertanda merah dan baca skema di atas untuk mengetahui jawapan tepat.";
+        }
+        document.getElementById("res-comment").innerText = comment;
+
+        setTimeout(function() {
+            summaryCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 150);
+
+        return false;
+    }
+
+    function resetForm() {
+        if (!confirm("Set semula soalan ini? Semua jawapan, tanda betul/salah, dan markah akan dipadamkan.")) {
+            return;
+        }
+
+        var nameInput = document.getElementById("student-name");
+        nameInput.readOnly = false;
+        nameInput.value = "";
+        nameInput.classList.remove("input-error");
+
+        var inputs = document.querySelectorAll(".ans-input");
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].readOnly = false;
+            inputs[i].value = "";
+            inputs[i].classList.remove("input-error", "input-correct", "input-wrong", "input-partial");
+        }
+
+        document.getElementById("alert-card").style.display = "none";
+
+        var badges = document.querySelectorAll(".status-badge");
+        for (var j = 0; j < badges.length; j++) {
+            badges[j].style.display = "none";
+            badges[j].innerHTML = "";
+        }
+
+        var skemaBoxes = document.querySelectorAll(".skema-box");
+        for (var k = 0; k < skemaBoxes.length; k++) {
+            skemaBoxes[k].style.display = "none";
+            skemaBoxes[k].innerHTML = "";
+        }
+
+        var blocks = document.querySelectorAll(".q-block");
+        for (var m = 0; m < blocks.length; m++) {
+            blocks[m].style.borderLeftColor = "#0284c7";
+        }
+
+        var submitBtn = document.getElementById("btn-submit");
+        submitBtn.disabled = false;
+        submitBtn.innerText = "Hantar & Semak Jawapan";
+
+        document.getElementById("summary-card").style.display = "none";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+</script>
+
+</body>
+</html>
